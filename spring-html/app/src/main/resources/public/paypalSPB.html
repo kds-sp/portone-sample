@@ -65,8 +65,8 @@
       async function loadPayment() {
         const requestData = {
           uiType: "PAYPAL_SPB",
-          storeId: "store-6575972a-e9b8-47aa-b1d5-a7b7c83a1a25",
-          channelKey: "channel-key-056138e3-1a1e-40af-849d-e8316bca813a",
+          storeId: "store-6575972a-e9b8-47aa-b1d5-a7b7c83a1a25",          // 대표상점
+          channelKey: "channel-key-056138e3-1a1e-40af-849d-e8316bca813a", // 김동석 페이팔 결제창 일반결제 및 정기결제_미국
           paymentId: `payment-${crypto.randomUUID()}`,
           orderName: "김동석 나이키 와플 트레이너 2 SD",
           totalAmount: 1000,
@@ -78,7 +78,8 @@
         try {
           const response = await PortOne.loadPaymentUI(requestData, {
             onPaymentSuccess: (response) => {
-              setResult(response);
+              alert(JSON.stringify(response));
+              console.log(JSON.stringify(response));
             },
             onPaymentFail: (error) => {
               alert(error);
