@@ -73,18 +73,7 @@
           currency: "CURRENCY_USD",
         };
 
-        const waitPortOne = new Promise((resolve) => {
-          const polling = setInterval(() => {
-            if (window.PortOne != null) {
-              clearInterval(polling)
-              resolve()
-            }
-          }, 50)
-        })
-        const waitItem = await fetch("/api/item").then(
-                async (response) => (item = await response.json()),
-        )
-        await Promise.all([waitPortOne, waitItem])
+        await initPortOne()
 
         try {
           const response = await PortOne.loadPaymentUI(requestData, {
@@ -98,6 +87,21 @@
         } catch (error) {
           console.error('Error loading payment UI:', error);
         }
+      }
+
+      async function initPortOne() {
+        const waitPortOne = new Promise((resolve) => {
+          const polling = setInterval(() => {
+            if (window.PortOne != null) {
+              clearInterval(polling)
+              resolve()
+            }
+          }, 50)
+        })
+        const waitItem = await fetch("/api/item").then(
+                async (response) => (item = await response.json()),
+        )
+        await Promise.all([waitPortOne, waitItem])
       }
 
       loadPayment();
