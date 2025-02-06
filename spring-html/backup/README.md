@@ -22,7 +22,7 @@ portone.secret.api=0000000000000000000000000000000000000000000000000000000000000
 portone.secret.webhook=whsec_00000000000000000000000000000000000000000000
 ```
 
-`app/src/main/resources/public/papalSPB.html` 파일에서 다음 내용을 찾아 변경해 주세요.
+`app/src/main/resources/public/index.html` 파일에서 다음 내용을 찾아 변경해 주세요.
 
 ```js
 const checkout = new Checkout(
@@ -36,6 +36,3 @@ const checkout = new Checkout(
 ```bash
 $ ./gradlew bootRun
 ```
-## 참고
-
-1. API & SDK > 페이팔 : https://developers.portone.io/opi/ko/integration/pg/v2/paypal-v2?v=v2

@@ -17,11 +17,12 @@ Content-Type: application/json
 {
   "data": {
     "storeId": "store-6575972a-e9b8-47aa-b1d5-a7b7c83a1a25",
-    "channelKey": "channel-key-5416059a-1aa8-4d17-a9ca-073808d2f6eb",
+    "_channelKey": "channel-key-5416059a-1aa8-4d17-a9ca-073808d2f6eb",
+    "channelKey": "channel-key-056138e3-1a1e-40af-849d-e8316bca813a",
     "paymentId": "37e179958be6f600",
     "orderName": "김동석신발",
     "totalAmount": 1000,
-    "currency": "KRW",
+    "currency": "USD",
     "payMethod": "CARD",
     "customData": {
       "item": "shoes"

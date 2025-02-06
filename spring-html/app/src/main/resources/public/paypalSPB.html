@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/munute_favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>paypal SPB</title>
+    <script src="https://cdn.portone.io/v2/browser-sdk.js" async defer></script>
+  </head>
+  <body>
+    <div id="root">
+      <main id="checkoutDialog" style="display: none">
+        <form id="checkoutForm">
+          <article>
+            <div class="item">
+              <div class="item-image">
+                <img id="itemImage" />
+              </div>
+              <div class="item-text">
+                <h5 id="itemName"></h5>
+                <p class="price-value"></p>
+              </div>
+            </div>
+            <div class="price">
+              <label>총 구입 가격</label>
+              <span class="price-value" />
+            </div>
+          </article>
+          <button id="checkoutButton" type="submit">결제</button>
+        </form>
+      </main>
+      <dialog id="failDialog">
+        <header>
+          <h1>결제 실패</h1>
+        </header>
+        <p />
+        <button type="button" class="closeDialog">닫기</button>
+      </dialog>
+      <dialog id="successDialog">
+        <header>
+          <h1>결제 성공</h1>
+        </header>
+        <p>결제에 성공했습니다.</p>
+        <button type="button" class="closeDialog">닫기</button>
+      </dialog>
+      <dialog id="virtualAccountDialog">
+        <header>
+          <h1>가상계좌 발급 완료</h1>
+        </header>
+        <p>가상계좌가 발급되었습니다.</p>
+        <button type="button" class="closeDialog">닫기</button>
+      </dialog>
+
+      <!--
+        페이팔 버튼을 렌더링 하고 싶은 위치에 "portone-ui-container"라는 class 이름을 갖는 DOM element를 넣습니다.
+        포트원 SDK는 해당 id를 가지는 element를 찾아 버튼을 렌더링합니다.
+      -->
+      <div class="portone-ui-container">
+        <!-- 여기에 페이팔 버튼이 생성됩니다. -->
+      </div>
+    </div>
+    <!-- 페이팔의 경우 다른 결제대행사(PG)의 결제창 호출 방식과 달리 버튼을 렌더링한 후 결제를 진행 -->
+    <script>
+      async function loadPayment() {
+        const requestData = {
+          uiType: "PAYPAL_SPB",
+          storeId: "store-6575972a-e9b8-47aa-b1d5-a7b7c83a1a25",
+          channelKey: "channel-key-056138e3-1a1e-40af-849d-e8316bca813a",
+          paymentId: `payment-${crypto.randomUUID()}`,
+          orderName: "김동석 나이키 와플 트레이너 2 SD",
+          totalAmount: 1000,
+          currency: "CURRENCY_USD",
+        };
+
+        const waitPortOne = new Promise((resolve) => {
+          const polling = setInterval(() => {
+            if (window.PortOne != null) {
+              clearInterval(polling)
+              resolve()
+            }
+          }, 50)
+        })
+        const waitItem = await fetch("/api/item").then(
+                async (response) => (item = await response.json()),
+        )
+        await Promise.all([waitPortOne, waitItem])
+
+        try {
+          const response = await PortOne.loadPaymentUI(requestData, {
+            onPaymentSuccess: (response) => {
+              setResult(response);
+            },
+            onPaymentFail: (error) => {
+              alert(error);
+            },
+          });
+        } catch (error) {
+          console.error('Error loading payment UI:', error);
+        }
+      }
+
+      loadPayment();
+    </script>
+  </body>
+</html>
